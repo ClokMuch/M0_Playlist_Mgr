@@ -5,3 +5,4 @@ class config():
     playlist_default_name = "Default"
     support_file_type = [".m3u", ".m3u8"]
 
+
