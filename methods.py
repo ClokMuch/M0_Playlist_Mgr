@@ -70,7 +70,6 @@ def get_a_dir(is_dir=True):
         if is_dir:
             tmp = tmp.replace("/", "\\") + '\\'
             loop_inct = False
-
         else:
             if tmp[-1] == '/':
                 tmp = tmp.replace("/", "\\")
