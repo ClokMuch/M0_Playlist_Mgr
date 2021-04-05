@@ -1,7 +1,7 @@
 # 方法库
 from os import path, listdir
 from tkinter.filedialog import askdirectory
-from tkinter.messagebox import showinfo
+from tkinter.messagebox import showinfo, askokcancel
 
 import config
 
@@ -77,4 +77,15 @@ def get_a_dir(is_dir=True):
             else:
                 print("选择的对象不是一个驱动器的根目录，请选择驱动器的根目录（C:\\等）")
                 showinfo(title="对象选择错误", message="请选择一个驱动器的根目录，如 C:\\ ，不要选择驱动器内的文件夹.")
+    return tmp
+
+
+def double_chk(title="二次确认", content="是否继续操作？"):
+    """
+    让用户决定是否继续操作
+    :param title:提示框的标题
+    :param content:提示框的内容
+    :return: 继续:True  取消:False
+    """
+    tmp = askokcancel(title=title, message=content)
     return tmp
