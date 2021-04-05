@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具
-# ver.1.
+# ver.1
 # 实现播放列表 Default 的随机化
 # By Clok Much
 
