@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>step_1</class>
- <widget class="QMainWindow" name="step_1">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
+ <class>Step10</class>
+ <widget class="QMainWindow" name="Step10">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -32,7 +29,7 @@
    <widget class="QLabel" name="label_text01">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>110</x>
       <y>30</y>
       <width>231</width>
       <height>41</height>
@@ -48,7 +45,40 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Select your device:</string>
+     <string>is your device?</string>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_device">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::WinPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="text">
+     <string>%device%</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
@@ -57,18 +87,44 @@
    <widget class="QListView" name="FolderPreview">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>50</x>
       <y>130</y>
-      <width>291</width>
+      <width>411</width>
       <height>211</height>
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_continue">
+   <widget class="QLabel" name="label_capacity">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>80</y>
+      <width>311</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>12</pointsize>
+      <italic>true</italic>
+     </font>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Capacity: Used/All</string>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_yes">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>80</y>
+      <y>130</y>
       <width>241</width>
       <height>91</height>
      </rect>
@@ -293,7 +349,8 @@
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Continue</string>
+     <string>Yes,
+this is my device.</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -334,78 +391,32 @@ color: rgb(255, 255, 255);</string>
      <string>_ </string>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollArea">
+   <widget class="QPushButton" name="button_no">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>80</y>
-      <width>171</width>
-      <height>261</height>
-     </rect>
-    </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>169</width>
-       <height>259</height>
-      </rect>
-     </property>
-     <widget class="QRadioButton" name="radioButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>115</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>D:\</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radioButton_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>115</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>E:\</string>
-      </property>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QLabel" name="label_text02">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>80</y>
-      <width>231</width>
-      <height>41</height>
+      <x>520</x>
+      <y>250</y>
+      <width>241</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Microsoft YaHei UI</family>
-      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
-    <property name="mouseTracking">
-     <bool>false</bool>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(135, 61, 36);
+color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Device Preview:</string>
-    </property>
-    <property name="scaledContents">
-     <bool>false</bool>
+     <string>No,
+this is NOT my device.</string>
     </property>
    </widget>
   </widget>

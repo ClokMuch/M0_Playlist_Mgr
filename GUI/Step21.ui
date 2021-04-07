@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>step_2</class>
- <widget class="QMainWindow" name="step_2">
+ <class>Step21</class>
+ <widget class="QMainWindow" name="Step21">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -10,8 +10,11 @@
     <height>381</height>
    </rect>
   </property>
+  <property name="mouseTracking">
+   <bool>false</bool>
+  </property>
   <property name="focusPolicy">
-   <enum>Qt::ClickFocus</enum>
+   <enum>Qt::StrongFocus</enum>
   </property>
   <property name="acceptDrops">
    <bool>true</bool>
@@ -31,7 +34,7 @@
      <rect>
       <x>40</x>
       <y>30</y>
-      <width>611</width>
+      <width>421</width>
       <height>41</height>
      </rect>
     </property>
@@ -45,23 +48,13 @@
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Select a playlist you want to edit or creat a new playlist(.m3u):</string>
+     <string>Creating a new playlist...</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QListView" name="FolderPreview">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>130</y>
-      <width>291</width>
-      <height>211</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button_continue">
+   <widget class="QPushButton" name="button_creat">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -290,7 +283,7 @@
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Continue</string>
+     <string>Creat</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -331,61 +324,12 @@ color: rgb(255, 255, 255);</string>
      <string>_ </string>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollArea">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>80</y>
-      <width>171</width>
-      <height>261</height>
-     </rect>
-    </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>169</width>
-       <height>259</height>
-      </rect>
-     </property>
-     <widget class="QRadioButton" name="radioButton">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>115</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Default</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="radioButton_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>115</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Playlist1</string>
-      </property>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QLabel" name="label_text02">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>90</x>
       <y>80</y>
-      <width>231</width>
+      <width>361</width>
       <height>41</height>
      </rect>
     </property>
@@ -399,13 +343,13 @@ color: rgb(255, 255, 255);</string>
      <bool>false</bool>
     </property>
     <property name="text">
-     <string>Playlist Preview:</string>
+     <string>Please input playlist name:</string>
     </property>
     <property name="scaledContents">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_creat_a_new_playlist">
+   <widget class="QPushButton" name="button_back">
     <property name="geometry">
      <rect>
       <x>520</x>
@@ -429,9 +373,9 @@ color: rgb(255, 255, 255);</string>
        <colorrole role="Button">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
@@ -456,18 +400,18 @@ color: rgb(255, 255, 255);</string>
        <colorrole role="Base">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
        <colorrole role="Window">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
@@ -494,9 +438,9 @@ color: rgb(255, 255, 255);</string>
        <colorrole role="Button">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
@@ -521,18 +465,18 @@ color: rgb(255, 255, 255);</string>
        <colorrole role="Base">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
        <colorrole role="Window">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
@@ -559,9 +503,9 @@ color: rgb(255, 255, 255);</string>
        <colorrole role="Button">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
@@ -586,18 +530,18 @@ color: rgb(255, 255, 255);</string>
        <colorrole role="Base">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
        <colorrole role="Window">
         <brush brushstyle="SolidPattern">
          <color alpha="255">
-          <red>24</red>
-          <green>80</green>
-          <blue>67</blue>
+          <red>111</red>
+          <green>111</green>
+          <blue>111</blue>
          </color>
         </brush>
        </colorrole>
@@ -630,11 +574,11 @@ color: rgb(255, 255, 255);</string>
      <bool>false</bool>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(24, 80, 67);
+     <string notr="true">background-color: rgb(111, 111, 111);
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Creat a new playlist</string>
+     <string>Back to selection</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -644,6 +588,62 @@ color: rgb(255, 255, 255);</string>
     </property>
     <property name="flat">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>130</y>
+      <width>291</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>Default</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_text03">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>130</y>
+      <width>72</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>.m3u</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_playlistnameSuggestions">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>180</y>
+      <width>371</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei UI</family>
+     </font>
+    </property>
+    <property name="text">
+     <string>Name suggestions.</string>
     </property>
    </widget>
   </widget>
