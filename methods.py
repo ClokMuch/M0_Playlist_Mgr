@@ -15,12 +15,9 @@ def try_find_device():
     for i in range(67, 91):
         driver_litter = chr(i)
         if path.isdir(driver_litter + ":\\" + config.Default.m0_folder):
-            print("检查到已导出的播放列表文件夹，无需自定义路径.")
-            print(("当前设备盘符为：" + driver_litter + ":\\"))
             m0_device = driver_litter + ":\\"
             return m0_device
     else:
-        print("无法检索到设备，可能是从未导出过播放列表，请自行选取设备路径.")
         return False
 
 
@@ -50,41 +47,6 @@ def get_all_files(floder_dir):
     """
     for root, dirs, files in walk(floder_dir):
         return files
-
-
-def chk_if_playlist(driver_litter):
-    """
-    检查是否存在播放列表，以及是否为默认列表
-    DriverLitter 为传入的驱动器，例如 C:\\
-
-    仅存在 Default 列表 返回 'Default'
-    仅存在非 Default 列表 返回 'Other'
-    存在 Default 列表及其他列表 返回 True
-    无列表或导出列表的文件夹 返回 False
-
-    此函数主要为后期多列表可选择做准备
-    '"""
-    exist_default = 0
-    exist_other = 0
-    try:
-        playlists = listdir(driver_litter + config.Default.m0_folder + "\\")
-        if config.Default.playlist_default_name+config.Default.m0_playlist_type in playlists:
-            exist_default = 1
-        for i in playlists:
-            if ".m3u" in i:
-                if "Default.m3u" != i:
-                    exist_other = 1
-                    continue
-        if exist_default == 1 and exist_other == 0:
-            return 'Default'
-        elif exist_default == 0 and exist_other == 1:
-            return 'Other'
-        elif exist_default == 1 and exist_other == 1:
-            return True
-        else:
-            return False
-    except FileNotFoundError:
-        return False
 
 
 def get_a_dir(is_dir=True):

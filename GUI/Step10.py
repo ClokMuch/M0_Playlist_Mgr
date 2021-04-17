@@ -10,6 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import methods
+
 
 class Ui_Step10(object):
     def setupUi(self, Step10):
@@ -164,7 +166,7 @@ class Ui_Step10(object):
         _translate = QtCore.QCoreApplication.translate
         Step10.setWindowTitle(_translate("Step10", "M0 Playlist Mgr - Step 1"))
         self.label_text01.setText(_translate("Step10", "is your device?"))
-        self.label_device.setText(_translate("Step10", ))
+        self.label_device.setText(_translate("Step10", methods.try_find_device()))
         self.label_capacity.setText(_translate("Step10", "Capacity: Used/All"))
         self.button_yes.setText(_translate("Step10", "Yes,\n"
 "this is my device."))
