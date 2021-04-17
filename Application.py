@@ -1,10 +1,11 @@
 # 山灵M0播放器播放列表管理工具
-# ver.1
+# ver.3
 # 实现播放列表 Default 的随机化
 # By Clok Much
 
 import config
 import methods
+
 
 from os import mkdir
 from random import shuffle
@@ -30,35 +31,9 @@ while True:
     if playlists[0]:
         playlist = (m0_device + config.Default.m0_folder + "\\"
                     + playlists[0])
-        playlist = methods.analysis_a_playlist(playlist)
-        playlist.append('\n')
+        playlist_editing = methods.analysis_a_playlist(playlist)
+        shuffle(playlist_editing)
         with open(playlist, "w", encoding="utf8") as file_object:
-            for i in playlist:
+            for i in playlist_editing:
                 file_object.write(i)
-
-    # 合并播放列表的完整路径：Default.m3u
-    # if exist_playlist == ("Default" or True):
-    #     playlist = (m0_device + config.Default.m0_folder + "\\"
-    #                 + config.Default.playlist_default_name
-    #                 + config.Default.m0_playlist_type)
-    # elif not exist_playlist:
-    #     playlist = (m0_device + config.Default.m0_folder + "\\"
-    #                 + config.Default.playlist_default_name
-    #                 + config.Default.m0_playlist_type)
-    #     with open(playlist, "w", encoding="utf8") as file_object:
-    #         file_object.write("Default")
-    #         print("创建了一个Default播放列表")
-    # else:
-    #     playlist = "coming_soon"  # 其他列表将在后续支持
-
-    # 默认播放列表：读取、随机化、保存
-    # if playlist == "coming_soon":
-    #     print("暂不支持非Default的列表处理、暂不支持创建新列表")
-    # else:
-    #     with open(playlist, "r", encoding="utf8") as file_obj:
-    #         tmp = file_obj.readlines()
-    #         tmp[-1] = tmp[-1] + '\n'
-    #         shuffle(tmp)
-    #     with open(playlist, "w", encoding="utf8") as file_obj:
-    #         for i in tmp:
-    #             file_obj.write(i)
+    break
