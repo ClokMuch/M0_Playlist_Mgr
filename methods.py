@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具方法库
-# ver.4
+# ver.5
 # By Clok Much
 
 from os import path, listdir, walk
@@ -140,6 +140,7 @@ def select_a_playlist(dir_of_playlists):
     playlist_full_path = askopenfilenames(title='选择一个播放列表文件',
                                           filetypes=[('Playlist file', config.Default.m0_playlist_type)],
                                           initialdir=dir_of_playlists)
+    playlist_full_path = playlist_full_path[0]
     playlist_full_path.replace('/', '\\')
     return playlist_full_path
 
@@ -156,11 +157,28 @@ def output_a_playlist(list_of_musics, playlist_full_path):
             file_object.write(i)
 
 
-def get_a_operation(info='输入指定数字进行操作：', int_range=()):
+def select_a_operation():
     """
-    输入一个整数选择操作
-    :param info: 操作提示语
-    :param int_range: 输入的数字范围
-    :return: 返回输入的整数
+    返回操作序列以选择操作
+    :return: 操作序列，返回为int
+        '1': '随机化',
+        '2': '升序排序',
+        '3': '重命名列表',
+        '4': '操作其他列表'
     """
-    return 0
+    operations = {
+        '1': '随机化',
+        '2': '升序排序',
+        '3': '重命名列表（不删除当前列表）',
+        '4': '操作其他列表'
+    }
+    selection_in = False
+    while not selection_in:
+        for key, value in operations.items():
+            print(key + ':' + value)
+        selection_in = input('请选择一个操作：')
+        if selection_in not in operations.keys():
+            selection_in = False
+            print('输入无效，需要重新输入！\n')
+    selection_in = int(selection_in)
+    return selection_in

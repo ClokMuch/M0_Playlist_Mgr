@@ -11,7 +11,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Step21(object):
+class Ui_Step21(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+        self._initUI()
+    def _initUI(self):
+        self.resize(350, 350)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # 无边框
     def setupUi(self, Step21):
         Step21.setObjectName("Step21")
         Step21.resize(804, 381)
@@ -242,3 +248,5 @@ class Ui_Step21(object):
         self.lineEdit.setText(_translate("Step21", "Default"))
         self.label_text03.setText(_translate("Step21", ".m3u"))
         self.label_playlistnameSuggestions.setText(_translate("Step21", "Name suggestions."))
+
+
