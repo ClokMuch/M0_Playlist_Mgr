@@ -163,3 +163,4 @@ def get_a_operation(info='输入指定数字进行操作：', int_range=()):
     :param int_range: 输入的数字范围
     :return: 返回输入的整数
     """
+    return 0
