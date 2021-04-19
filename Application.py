@@ -1,6 +1,6 @@
 # 山灵M0播放器播放列表管理工具
-# ver.3
-# 实现第一个找到的列表的随机化
+# ver.4
+# 尝试随机化任意一个列表（自选）
 # By Clok Much
 
 import config
@@ -23,7 +23,8 @@ while True:
         if m0_device == 'Cancel':
             continue
         # 如果指定了一个驱动器，说明播放器未曾导出过播放列表，因此需要创建一个播放列表存放的文件夹
-        double_chk_result = methods.double_chk(title="操作确认", content="所选驱动器不存在列表及列表文件夹，是否创建一个默认列表，从而添加音乐？（添加功能暂时没有）\n若不创建，需要再次选择驱动器.")
+        double_chk_result = methods.double_chk(title="操作确认",
+                                               content="所选驱动器不存在列表及列表文件夹，是否创建一个默认列表，从而添加音乐？（添加功能暂时没有）\n若不创建，需要再次选择驱动器.")
         if double_chk_result:
             mkdir(m0_device + config.Default.m0_folder)
 
@@ -31,16 +32,23 @@ while True:
             continue
 
     print("一切顺利，当前操作的盘符为 " + m0_device)
-    input("按回车键开始随机化找到的第一个列表...")
-    # 操作第一个寻找到的文件
+    # 若只有一个列表时，直接准备处理；若有多个列表，需自行选择需要处理的列表
     playlists = methods.get_all_files(m0_device + config.Default.m0_folder + "\\")
-    if playlists[0]:
+    if len(playlists) == 1:
+        input("仅发现一个列表：" + playlists[0] + "\n按回车键开始随机化这个列表...")
         playlist = (m0_device + config.Default.m0_folder + "\\"
                     + playlists[0])
         playlist_editing = methods.analysis_a_playlist(playlist)
         shuffle(playlist_editing)
-        with open(playlist, "w", encoding="utf8") as file_object:
-            for i in playlist_editing:
-                file_object.write(i)
-    input(playlists[0] + " 列表随机化完毕.")
+        methods.output_a_playlist(playlist_editing, playlist)
+        input(playlists[0] + " 列表随机化完毕.")
+
+    elif len(playlists) >= 2:
+        print("发现多个列表，请选择需要处理的列表...")
+        playlist = methods.select_a_playlist(m0_device + config.Default.m0_folder)
+        playlist_editing = methods.analysis_a_playlist(playlist)
+        shuffle(playlist_editing)
+        methods.output_a_playlist(playlist_editing, playlist)
+        input(playlists[0] + " 列表随机化完毕.")
+
     break
