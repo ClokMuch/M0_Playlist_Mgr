@@ -24,9 +24,9 @@
 **运行开源代码（适用于已有 Python3 环境的 Windows 用户）：**
 1. 下载仓库根目录的以下文件，并放在同一目录：
    
-   > Application.py, methods.py
+   > Application.py, methods.py, config.py
    
-   共 2 个文件.
+   共 3 个文件.
 
 2. 连接山灵 M0 设备.
 
