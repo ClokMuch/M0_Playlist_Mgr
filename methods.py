@@ -1,12 +1,10 @@
 # 山灵M0播放器播放列表管理工具方法库
-# ver.5
+# ver.6
 # By Clok Much
 
 from os import path, listdir, walk
 from tkinter.filedialog import askdirectory, askopenfilenames
 from tkinter.messagebox import showinfo, askokcancel
-from tkinter.simpledialog import askinteger
-
 
 import config
 
@@ -164,13 +162,13 @@ def select_a_operation():
         '1': '随机化',
         '2': '升序排序',
         '3': '重命名列表',
-        '4': '操作其他列表'
+        '4': '退出程序'
     """
     operations = {
         '1': '随机化',
         '2': '升序排序',
         '3': '重命名列表（不删除当前列表）',
-        '4': '操作其他列表'
+        '4': '退出程序'
     }
     selection_in = False
     while not selection_in:

@@ -1,7 +1,8 @@
 # 山灵M0播放器播放列表管理工具
-# ver.5
-# 单一列表可实现多种操作，多选一可随机化列表
+# ver.6
+# 列表可实现：随机化、排序、重命名
 # By Clok Much
+import sys
 
 import config
 import methods
@@ -39,28 +40,53 @@ while True:
         playlist = (m0_device + config.Default.m0_folder + "\\"
                     + playlists[0])
         playlist_editing = methods.analysis_a_playlist(playlist)
-        selection = methods.select_a_operation()
-        if selection == 1:
-            shuffle(playlist_editing)
-            methods.output_a_playlist(playlist_editing, playlist)
-            input(playlists[0] + " 列表随机化完毕.")
-        elif selection == 2:
-            playlist_editing.sort()
-            methods.output_a_playlist(playlist_editing, playlist)
-            input(playlists[0] + " 列表升序排列完毕.")
-        elif selection == 3:
-            playlist_editing.sort(reverse=True)
-            new_name = input('请输入新的播放列表名称（不包含扩展名）：')
-            methods.output_a_playlist(playlist_editing, m0_device + config.Default.m0_folder + "\\"
-                                      + new_name + config.Default.m0_playlist_type)
-            input(new_name + config.Default.m0_playlist_type + "为新修正的全文件名.")
+        while True:
+            selection = methods.select_a_operation()
+            if selection == 1:
+                shuffle(playlist_editing)
+                methods.output_a_playlist(playlist_editing, playlist)
+                input(playlists[0] + " 列表随机化完毕.")
+                break
+            elif selection == 2:
+                playlist_editing.sort()
+                methods.output_a_playlist(playlist_editing, playlist)
+                input(playlists[0] + " 列表升序排列完毕.")
+                break
+            elif selection == 3:
+                playlist_editing.sort(reverse=True)
+                new_name = input('请输入新的播放列表名称（不包含扩展名）：')
+                methods.output_a_playlist(playlist_editing, m0_device + config.Default.m0_folder + "\\"
+                                          + new_name + config.Default.m0_playlist_type)
+                input(new_name + config.Default.m0_playlist_type + "为新修正的全文件名.")
+                break
+            elif selection == 4:
+                sys.exit()
 
     elif len(playlists) >= 2:
         print("发现多个列表，请选择需要处理的列表...")
         playlist = methods.select_a_playlist(m0_device + config.Default.m0_folder)
         playlist_editing = methods.analysis_a_playlist(playlist)
-        shuffle(playlist_editing)
-        methods.output_a_playlist(playlist_editing, playlist)
-        input(playlist + " 列表随机化完毕.")
+        print("当前处理的播放列表为：" + playlist)
+        while True:
+            selection = methods.select_a_operation()
+            if selection == 1:
+                shuffle(playlist_editing)
+                methods.output_a_playlist(playlist_editing, playlist)
+                input(playlist + " 列表随机化完毕.")
+                break
+            elif selection == 2:
+                playlist_editing.sort()
+                methods.output_a_playlist(playlist_editing, playlist)
+                input(playlist + " 列表升序排列完毕.")
+                break
+            elif selection == 3:
+                playlist_editing.sort(reverse=True)
+                new_name = input('请输入新的播放列表名称（不包含扩展名）：')
+                methods.output_a_playlist(playlist_editing, m0_device + config.Default.m0_folder + "\\"
+                                          + new_name + config.Default.m0_playlist_type)
+                input(new_name + config.Default.m0_playlist_type + "为新修正的全文件名.")
+                break
+            elif selection == 4:
+                sys.exit()
 
     break
