@@ -239,7 +239,6 @@ class Ui_Step11(object):
         self.radioButton.setText(_translate("Step11", "Default"))
         self.label_text02.setText(_translate("Step11", "Content preview:"))
         self.button_rechk.setText(_translate("Step11", "Re-check"))
-        self.button_rechk.clicked.connect(self.chk)
+        #self.button_rechk.clicked.connect()
 
-    def chk(self):
-        print(methods.try_find_device())
+
