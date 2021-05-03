@@ -332,6 +332,9 @@ color: rgb(255, 255, 255);</string>
       <height>301</height>
      </rect>
     </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
     <property name="widgetResizable">
      <bool>true</bool>
     </property>
@@ -630,6 +633,12 @@ color: rgb(255, 255, 255);</string>
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>button_continue</tabstop>
+  <tabstop>button_rechk</tabstop>
+  <tabstop>radioButton</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
