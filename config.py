@@ -24,7 +24,7 @@ class AutoOptCombine:
 
 class AutoOptTransform:
     note = "自动转换本工具支持的格式为M0播放列表为文件格式"
-    remove_original_list = False
+    remove_original_list = True    # 自动删除原始列表
     # clear_sig = True    # 去除某些带BOM的列表前缀
     switch = True
     # 作用条件
