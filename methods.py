@@ -1,9 +1,9 @@
 # 山灵M0播放器播放列表管理工具方法库
-# ver.6
+# ver.7
 # By Clok Much
 
 from os import path, listdir, walk
-from tkinter.filedialog import askdirectory, askopenfilenames
+from tkinter.filedialog import askdirectory, askopenfilename
 from tkinter.messagebox import showinfo, askokcancel
 
 import config
@@ -15,13 +15,18 @@ def try_find_device():
     存在：返回 所在盘符（*:\\)
     不存在：返回 False
     """
+    devices_list = []
     for i in range(67, 91):
         driver_litter = chr(i)
         if path.isdir(driver_litter + ":\\" + config.Default.m0_folder):
             m0_device = driver_litter + ":\\"
-            return m0_device
-    else:
+            devices_list.append(m0_device)
+    if len(devices_list) == 1:
+        return devices_list[0]
+    elif not devices_list:
         return False
+    else:
+        return devices_list
 
 
 def analysis_a_playlist(list_file_full_path):
@@ -56,6 +61,8 @@ def get_a_dir(is_dir=True):
     """
     选择一个路径，并返回以斜杠结尾的有效路径；
     对 is_dir 指定非 True 内容时，将再次选择，直到选择一个驱动器
+    ▲ 这里有一个坑：获取目录的含树没有想到指定为我的电脑初始路径的方法
+    这个函数可以尝试优化结构
     """
     loop_inct = True
     tmp = 0
@@ -91,6 +98,8 @@ def double_chk(title="二次确认", content="是否继续操作？"):
     return tmp
 
 
+'''
+此函数暂时废弃
 def get_musics():
     """
     返回包含完整路径的元组，以\\分割的路径
@@ -105,6 +114,7 @@ def get_musics():
     else:
         print('没有选择任何文件.')
         return 0
+'''
 
 
 def create_a_playlist(playlist_dir=None, playlist_name=None):
@@ -134,11 +144,15 @@ def select_a_playlist(dir_of_playlists):
     :param list_of_playlists: 传入储存播放列表路径（不包含末尾斜杠）
     :return: 返回完整文件名
     """
-    showinfo(title="发现多个列表", message="请在下一个界面选择需要处理的播放列表")
-    playlist_full_path = askopenfilenames(title='选择一个播放列表文件',
-                                          filetypes=[('Playlist file', config.Default.m0_playlist_type)],
-                                          initialdir=dir_of_playlists)
-    playlist_full_path = playlist_full_path[0]
+    playlist_full_path = None
+    while not playlist_full_path:
+        showinfo(title="发现多个列表", message="请在下一个界面选择需要处理的播放列表")
+        playlist_full_path = askopenfilename(title='选择一个播放列表文件',
+                                              filetypes=[('Playlist file', config.Default.m0_playlist_type)],
+                                              initialdir=dir_of_playlists)
+        if not playlist_full_path:
+            showinfo(title="未选择任何一个播放列表", message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.")
+    # playlist_full_path = playlist_full_path[0]
     playlist_full_path.replace('/', '\\')
     return playlist_full_path
 
