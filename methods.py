@@ -1,4 +1,4 @@
-# 山灵M0播放器播放列表管理工具方法库
+# 山灵M0播放器播放列表管理工具通用方法库
 # ver.7
 # By Clok Much
 
@@ -133,7 +133,7 @@ def create_a_playlist(playlist_dir=None, playlist_name=None):
         return 'Playlist_already_existed'
 
     # 创建播放列表
-    with open(playlist_dir+full_playlist_name, 'w', encoding='utf8') as file_object:
+    with open(playlist_dir + full_playlist_name, 'w', encoding='utf8') as file_object:
         file_object.write('\n')
     return 'Succeed'
 
@@ -141,15 +141,15 @@ def create_a_playlist(playlist_dir=None, playlist_name=None):
 def select_a_playlist(dir_of_playlists):
     """
     选择一个播放列表
-    :param list_of_playlists: 传入储存播放列表路径（不包含末尾斜杠）
+    list_of_playlists: 传入储存播放列表路径（不包含末尾斜杠）
     :return: 返回完整文件名
     """
     playlist_full_path = None
     while not playlist_full_path:
         showinfo(title="发现多个列表", message="请在下一个界面选择需要处理的播放列表")
         playlist_full_path = askopenfilename(title='选择一个播放列表文件',
-                                              filetypes=[('Playlist file', config.Default.m0_playlist_type)],
-                                              initialdir=dir_of_playlists)
+                                             filetypes=[('Playlist file', config.Default.m0_playlist_type)],
+                                             initialdir=dir_of_playlists)
         if not playlist_full_path:
             showinfo(title="未选择任何一个播放列表", message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.")
     # playlist_full_path = playlist_full_path[0]
