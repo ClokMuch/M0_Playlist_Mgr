@@ -23,24 +23,25 @@ def auto_opt_combine(playlists, m0_device):
             source_songs = 0
             for tmp in combined_lists:
                 editing_combined_list = methods.analysis_a_playlist(m0_device + config.Default.m0_folder + "\\" + tmp)
-                if editing_combined_list[0] == config.AutoOptCombine.inct_in_file_line1 + "\n":
-                    source_lists = editing_combined_list[1][2:-1].split(",")
-                    combined_pool = []
-                    for source_list in source_lists:
-                        source_list_tmp = methods.analysis_a_playlist(
-                            m0_device + config.Default.m0_folder + "\\" + source_list + config.Default.m0_playlist_type)
-                        source_songs += len(source_list_tmp)
-                        combined_pool += source_list_tmp
-                    if config.AutoOptCombine.combine_randomly:
-                        # 设定随机重排合并列表时执行随机重排
-                        print("随机重排合并后的播放列表...（此配置可在 config.py 中修改）")
-                        shuffle(combined_pool)
-                    combined_pool.insert(0, ("# " + ",".join(source_lists) + "\n"))
-                    combined_pool.insert(0, (config.AutoOptCombine.inct_in_file_line1 + "\n"))
-                    methods.output_a_playlist(combined_pool, m0_device + config.Default.m0_folder + "\\" + tmp)
-                    print("自动合并完毕，详情如下：")
-                    print("原始子列表共计 " + str(source_songs) + " 曲音频；")
-                    print("自动合成的播放列表共计 " + str(len(combined_pool) - 2) + " 曲音频.")
+                # if editing_combined_list[0] == config.AutoOptCombine.inct_in_file_line1 + "\n":
+                    # source_lists = editing_combined_list[1][2:-1].split(",")
+                source_lists = tmp[:-16].split("And")
+                combined_pool = []
+                for source_list in source_lists:
+                    source_list_tmp = methods.analysis_a_playlist(
+                        m0_device + config.Default.m0_folder + "\\" + source_list + config.Default.m0_playlist_type)
+                    source_songs += len(source_list_tmp)
+                    combined_pool += source_list_tmp
+                if config.AutoOptCombine.combine_randomly:
+                    # 设定随机重排合并列表时执行随机重排
+                    print("随机重排合并后的播放列表...（此配置可在 config.py 中修改）")
+                    shuffle(combined_pool)
+                # combined_pool.insert(0, ("# " + ",".join(source_lists) + "\n"))
+                # combined_pool.insert(0, (config.AutoOptCombine.inct_in_file_line1 + "\n"))
+                methods.output_a_playlist(combined_pool, m0_device + config.Default.m0_folder + "\\" + tmp)
+                print("自动合并完毕，详情如下：")
+                print("原始子列表共计 " + str(source_songs) + " 曲音频；")
+                print("自动合成的播放列表共计 " + str(len(combined_pool)) + " 曲音频.")
         else:
             print("无满足自动执行条件的对象.")
 

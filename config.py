@@ -16,7 +16,7 @@ class AutoOptCombine:
     switch = True   # 功能开关
     combine_randomly = True  # 自动合并后打乱列表
     # 作用条件
-    inct_in_file_line1 = '# auto_opt_combine'    # 文件第一行标记
+    # inct_in_file_line1 = '#auto_opt_combine'    # 文件第一行标记，暂时废弃
     filename_prefix = ''    # 合并列表的文件名前缀
     filename_mid = 'And'    # 合并列表文件名中分割原始列表的连接
     filename_suffix = '#AutoCombine'    # 合并列表文件名后缀
