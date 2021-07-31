@@ -37,11 +37,11 @@ def analysis_playlist(list_file_full_path):
     返回一个 list 或 dict（列表全路径: 列表解析的list）
     """
     if type(list_file_full_path) == str:
-        list_file_full_path = {list_file_full_path: '0'}
+        list_file_full_path = {list_file_full_path: '0\n'}
     else:
         tmp = {}
         for i in list_file_full_path:
-            tmp[i] = '0'
+            tmp[i] = '0\n'
         list_file_full_path = tmp
         pass
     for i in list_file_full_path.keys():
@@ -96,8 +96,9 @@ def get_a_dir(is_dir=True):
                     tmp = tmp.replace("/", "\\")
                     loop_inct = False
                 else:
-                    print("选择的对象不是一个驱动器的根目录，请选择驱动器的根目录（C:\\等）")
-                    showinfo(title="对象选择错误", message="请选择一个驱动器的根目录，如 C:\\ ，不要选择驱动器内的文件夹.")
+                    print("选择的对象不是一个驱动器的根目录，将使用选择的文件夹对应的盘符.")
+                    tmp = tmp.replace("/", "\\")[:3]
+                    loop_inct = False
     return tmp
 
 
@@ -113,7 +114,7 @@ def double_chk(title="二次确认", content="是否继续操作？"):
 
 
 '''
-此函数暂时废弃
+此函数已废弃
 def get_musics():
     """
     返回包含完整路径的元组，以\\分割的路径
@@ -187,6 +188,8 @@ def output_a_playlist(list_of_musics, playlist_full_path):
             file_object.write(i)
 
 
+'''
+此函数已废弃
 def select_a_operation():
     """
     返回操作序列以选择操作
@@ -212,6 +215,7 @@ def select_a_operation():
             print('输入无效，需要重新输入！\n')
     selection_in = int(selection_in)
     return selection_in
+'''
 
 
 def universal_selections(tips='', selections=None):

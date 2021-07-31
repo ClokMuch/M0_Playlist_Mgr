@@ -20,7 +20,7 @@ while True:
         print(("当前设备盘符为：" + m0_device))
     elif type(m0_device) == list:
         # 返回类型为 list ，表示找到多个设备
-        print("检查到多个可能存在的设备，请自行选取路径.")
+        print("检查到多个可能存在的设备，需自行选取设备对应的盘符，若选择一个目录，将使用目录所在的盘符...")
         m0_device = methods.get_a_dir(is_dir=False)
         if m0_device == 'Cancel':
             continue
