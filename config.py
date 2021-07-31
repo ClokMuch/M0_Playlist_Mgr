@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具配置
-# ver.7
+# ver.9
 # By Clok Much
 
 class Default:

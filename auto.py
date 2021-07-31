@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具自动执行方法库
-# ver.7
+# ver.9
 # By Clok Much
 
 import methods

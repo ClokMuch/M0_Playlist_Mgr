@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具
-# ver.7
+# ver.9
 # By Clok Much
 import sys
 from os import mkdir, listdir
