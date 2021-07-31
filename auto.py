@@ -27,8 +27,8 @@ def auto_opt_combine(playlists, m0_device):
                 for source_list in source_lists:
                     source_list_tmp = methods.analysis_playlist(
                         m0_device + config.Default.m0_folder + "\\" + source_list + config.Default.m0_playlist_type)
-                    source_songs += len(source_list_tmp)
-                    combined_pool += source_list_tmp
+                    source_songs += len(source_list_tmp[0])
+                    combined_pool += source_list_tmp[0]
                 if config.AutoOptCombine.combine_randomly:
                     # 设定随机重排合并列表时执行随机重排
                     print("随机重排合并后的播放列表...（此配置可在 config.py 中修改）")
