@@ -22,13 +22,10 @@ def auto_opt_combine(playlists, m0_device):
             print("找到疑似自动执行合成的播放列表文件：\n" + str(combined_lists))
             source_songs = 0
             for tmp in combined_lists:
-                editing_combined_list = methods.analysis_a_playlist(m0_device + config.Default.m0_folder + "\\" + tmp)
-                # if editing_combined_list[0] == config.AutoOptCombine.inct_in_file_line1 + "\n":
-                    # source_lists = editing_combined_list[1][2:-1].split(",")
                 source_lists = tmp[:-16].split("And")
                 combined_pool = []
                 for source_list in source_lists:
-                    source_list_tmp = methods.analysis_a_playlist(
+                    source_list_tmp = methods.analysis_playlist(
                         m0_device + config.Default.m0_folder + "\\" + source_list + config.Default.m0_playlist_type)
                     source_songs += len(source_list_tmp)
                     combined_pool += source_list_tmp
@@ -43,7 +40,7 @@ def auto_opt_combine(playlists, m0_device):
                 print("原始子列表共计 " + str(source_songs) + " 曲音频；")
                 print("自动合成的播放列表共计 " + str(len(combined_pool)) + " 曲音频.")
         else:
-            print("无满足自动执行条件的对象.")
+            print("自动合并列表：无满足自动执行条件的对象.")
 
 
 def auto_opt_transform(playlists, m0_device, ):
@@ -58,7 +55,7 @@ def auto_opt_transform(playlists, m0_device, ):
         if pre_transform_lists:
             for tmp in pre_transform_lists:
                 editing_pre_transform_list = \
-                    methods.analysis_a_playlist(m0_device + config.Default.m0_folder + "\\" + tmp)
+                    methods.analysis_playlist(m0_device + config.Default.m0_folder + "\\" + tmp)
                 try:
                     if config.AutoOptTransform.inct_in_file_line1 in editing_pre_transform_list[0]:
                         transform_lists.append(tmp)
@@ -67,8 +64,8 @@ def auto_opt_transform(playlists, m0_device, ):
             if transform_lists:
                 print("找到疑似可转换的列表：\n" + str(transform_lists))
                 for transform_list in transform_lists:
-                    original_list = methods.analysis_a_playlist(m0_device + config.Default.m0_folder + "\\" +
-                                                                transform_list)
+                    original_list = methods.analysis_playlist(m0_device + config.Default.m0_folder + "\\" +
+                                                              transform_list)
                     output_list = []
                     del original_list[0]
                     replace_prefix_num = 0
@@ -84,5 +81,5 @@ def auto_opt_transform(playlists, m0_device, ):
                         remove(m0_device + config.Default.m0_folder + "\\" + transform_list)
                         print("已删除转换前的列表文件. （可在 config.py 中修改配置）")
                 print("自动转换盘符完毕.\n")
-            else:
-                print("无满足自动执行条件的对象.")
+        else:
+            print("自动转换盘符：无满足自动执行条件的对象.")

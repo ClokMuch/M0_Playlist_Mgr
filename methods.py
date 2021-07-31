@@ -3,7 +3,8 @@
 # By Clok Much
 
 from os import path, listdir, walk
-from tkinter.filedialog import askdirectory, askopenfilename
+
+from tkinter.filedialog import askdirectory, askopenfilenames
 from tkinter.messagebox import showinfo, askokcancel
 
 import config
@@ -12,7 +13,7 @@ import config
 def try_find_device():
     """
     以导出播放列表为依据，检查是否存在设备
-    存在：返回 所在盘符（*:\\)
+    存在：返回 所在盘符（*:\\)：若仅有一个，返回为 str ；若有多个，返回为 list .
     不存在：返回 False
     """
     devices_list = []
@@ -29,22 +30,36 @@ def try_find_device():
         return devices_list
 
 
-def analysis_a_playlist(list_file_full_path):
+def analysis_playlist(list_file_full_path):
     """
     解析一个列表，返回一个去除空行的列表
-    list_file 为传入的列表全路径，类型为 str
-    返回一个 list
+    list_file 为传入的列表全路径，类型为 str 或 list
+    返回一个 list 或 dict（列表全路径: 列表解析的list）
     """
-    with open(list_file_full_path, 'r', encoding='utf8') as file_object:
-        tmp_list = file_object.readlines()
-        # 去除所有的空行
-        analysis_a_playlist_loop_inct = True
-        while analysis_a_playlist_loop_inct:
-            try:
-                tmp_list.remove('\n')
-            except ValueError:
-                analysis_a_playlist_loop_inct = False
-        return tmp_list
+    if type(list_file_full_path) == str:
+        list_file_full_path = {list_file_full_path: '0'}
+    else:
+        tmp = {}
+        for i in list_file_full_path:
+            tmp[i] = '0'
+        list_file_full_path = tmp
+        pass
+    for i in list_file_full_path.keys():
+        with open(i, 'r', encoding='utf8') as file_object:
+            list_file_full_path[i] = file_object.readlines()
+            # 去除所有的空行
+            analysis_a_playlist_loop_inct = True
+            while analysis_a_playlist_loop_inct:
+                try:
+                    list_file_full_path[i].remove('\n')
+                except ValueError:
+                    analysis_a_playlist_loop_inct = False
+    if len(list_file_full_path) == 1:
+        for i in list_file_full_path.values():
+            tmp = [i]
+            return tmp
+    else:
+        return list_file_full_path
 
 
 def get_all_files(floder_dir):
@@ -69,7 +84,6 @@ def get_a_dir(is_dir=True):
     while loop_inct:
         tmp = askdirectory()
         if not tmp:
-            loop_inct = True
             print('未选择任何路径，将再次选择...')
             showinfo(title="未选择驱动器", message="您取消选择，将重新自动检查设备路径.")
             return 'Cancel'
@@ -138,22 +152,26 @@ def create_a_playlist(playlist_dir=None, playlist_name=None):
     return 'Succeed'
 
 
-def select_a_playlist(dir_of_playlists):
+def select_playlist(dir_of_playlists):
     """
-    选择一个播放列表
+    选择一个或多个播放列表
     list_of_playlists: 传入储存播放列表路径（不包含末尾斜杠）
-    :return: 返回完整文件名
+    :return: 返回含有完整文件名的列表
     """
     playlist_full_path = None
     while not playlist_full_path:
         showinfo(title="发现多个列表", message="请在下一个界面选择需要处理的播放列表")
-        playlist_full_path = askopenfilename(title='选择一个播放列表文件',
-                                             filetypes=[('Playlist file', config.Default.m0_playlist_type)],
-                                             initialdir=dir_of_playlists)
+        playlist_full_path = askopenfilenames(title='选择一个或多个播放列表文件',
+                                              filetypes=[('Playlist file', config.Default.m0_playlist_type)],
+                                              initialdir=dir_of_playlists)
         if not playlist_full_path:
             showinfo(title="未选择任何一个播放列表", message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.")
     # playlist_full_path = playlist_full_path[0]
-    playlist_full_path.replace('/', '\\')
+    print(playlist_full_path)
+    playlist_full_path = list(playlist_full_path)
+    for i in playlist_full_path:
+        i.replace('/', '\\')
+    print(playlist_full_path)
     return playlist_full_path
 
 
@@ -194,3 +212,27 @@ def select_a_operation():
             print('输入无效，需要重新输入！\n')
     selection_in = int(selection_in)
     return selection_in
+
+
+def universal_selections(tips='', selections=None):
+    """
+    获取输入选项并判断是否合理，无误后返回选择结果
+    tips: 字符串，列出选项前的提示语
+    selections: 字典，输入的选择条目
+    :return: 整数，输出的选择结果
+    """
+    if type(selections) != dict:
+        print("##内部错误：def universal_selections 传入的 selections 不是 dict 类型！")
+    if tips:
+        print(tips)
+    for key, value in selections.items():
+        print(key + ':' + value)
+    while True:
+        result = input('请选择一个操作：')
+        if result not in selections.keys():
+            print('输入无效，需要重新输入！')
+            continue
+        else:
+            result = int(result)
+            break
+    return result
