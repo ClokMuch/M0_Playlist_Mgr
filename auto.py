@@ -57,7 +57,7 @@ def auto_opt_transform(playlists, m0_device, ):
                 editing_pre_transform_list = \
                     methods.analysis_playlist(m0_device + config.Default.m0_folder + "\\" + tmp)
                 try:
-                    if config.AutoOptTransform.inct_in_file_line1 in editing_pre_transform_list[0]:
+                    if config.AutoOptTransform.inct_in_file_line1 in editing_pre_transform_list[0][0]:
                         transform_lists.append(tmp)
                 except IndexError:
                     continue
@@ -67,16 +67,16 @@ def auto_opt_transform(playlists, m0_device, ):
                     original_list = methods.analysis_playlist(m0_device + config.Default.m0_folder + "\\" +
                                                               transform_list)
                     output_list = []
-                    del original_list[0]
+                    del original_list[0][0]
                     replace_prefix_num = 0
-                    for tmp in original_list:
+                    for tmp in original_list[0]:
                         if (tmp[1] == ':') and (tmp[2] == '\\'):
                             tmp = config.Default.m0_prefix[0] + tmp[1:]
                             replace_prefix_num += 1
                         output_list.append(tmp)
                     print("对列表 " + transform_list + "已完成 " + str(replace_prefix_num) + " 个列表内的盘符指向.")
                     methods.output_a_playlist(output_list, m0_device + config.Default.m0_folder + "\\" +
-                                              transform_list[0:-5] + config.Default.m0_playlist_type)
+                                              transform_list[0:-len(config.AutoOptTransform.file_type)] + config.Default.m0_playlist_type)
                     if config.AutoOptTransform.remove_original_list:
                         remove(m0_device + config.Default.m0_folder + "\\" + transform_list)
                         print("已删除转换前的列表文件. （可在 config.py 中修改配置）")
