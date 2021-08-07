@@ -168,11 +168,11 @@ def select_playlist(dir_of_playlists):
         if not playlist_full_path:
             showinfo(title="未选择任何一个播放列表", message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.")
     # playlist_full_path = playlist_full_path[0]
-    print(playlist_full_path)
+    # print(playlist_full_path)
     playlist_full_path = list(playlist_full_path)
     for i in playlist_full_path:
         i.replace('/', '\\')
-    print(playlist_full_path)
+    # print(playlist_full_path)
     return playlist_full_path
 
 

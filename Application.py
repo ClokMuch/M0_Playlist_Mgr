@@ -92,12 +92,12 @@ while True:
         # ▲已知问题：包含同名不同类型列表，自动转换后只有一个M0支持列表时仍提示多个列表
         playlist = methods.select_playlist(m0_device + config.Default.m0_folder)
         playlist_editing = methods.analysis_playlist(playlist)
-        print(len(playlist_editing))
+        # print(len(playlist_editing))
         if len(playlist_editing) == 1:
             playlist = playlist[0]
             playlist_editing = playlist_editing[0]
             while True:
-                print("\n当前处理的播放列表为：" + playlist)
+                print("\n当前处理的播放列表共 1 个，为：" + playlist)
                 print("当前列表对象数为：" + str(len(playlist_editing)))
                 selection = methods.universal_selections(selections=config.Operations.single)
                 if selection == 1:
