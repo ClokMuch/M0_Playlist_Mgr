@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具配置
-# ver.10
+# ver.11
 # By Clok Much
 
 class Default:
@@ -66,7 +66,6 @@ class Operations:
         details = {
             '1': ('全部随机化', 'lst_random'),
             '2': ('全部升序排序', 'lst_order'),
-            '3': ('全部创建副本，需要逐个输入新名称（不删除旧列表，继续编辑当前选定的多个列表)', 'lst_copy'),
             '+': ('将选定的列表全设为启用状态', 'lst_enable'),
             '-': ('将选定的列表全设为禁用状态', 'lst_disable'),
             '0': ('对调选定的列表状态（启用变为禁用，禁用变为启用）', 'lst_switch'),

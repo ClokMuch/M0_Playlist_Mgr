@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具通用方法库
-# ver.10
+# ver.11
 # By Clok Much
 
 from os import path, listdir, walk
@@ -148,7 +148,7 @@ def create_a_playlist(playlist_dir=None, playlist_name=None):
 def select_playlist(dir_of_playlists):
     """
     选择一个或多个播放列表
-    list_of_playlists: 传入储存播放列表路径（不包含末尾斜杠）
+    list_of_playlists: 传入储存播放列表路径（包含末尾斜杠）
     :return: 返回含有完整文件名的列表
     """
     playlist_full_path = None
@@ -167,13 +167,11 @@ def select_playlist(dir_of_playlists):
             showinfo(title="未选择任何一个播放列表",
                      message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.\n\n"
                              "默认只显示已启用的列表，如果需要选择禁用的列表，请在右下文件类型处切换选择.")
-    # playlist_full_path = playlist_full_path[0]
-    # print(playlist_full_path)
     playlist_full_path = list(playlist_full_path)
+    result = []
     for i in playlist_full_path:
-        i.replace('/', '\\')
-    # print(playlist_full_path)
-    return playlist_full_path
+        result.append(i.replace('/', '\\'))
+    return result
 
 
 def output_a_playlist(list_of_musics, playlist_full_path):
@@ -237,6 +235,7 @@ def universal_selections(tips='', selections=None):
             print('输入无效，需要重新输入！')
             continue
         else:
+            result = selections[result][1]
             return result
 
 

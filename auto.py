@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具自动执行方法库
-# ver.10
+# ver.11
 # By Clok Much
 
 import methods
@@ -98,7 +98,7 @@ def auto_opt_transform(playlists, m0_device):
                         else:
                             new_value.append(tmp)
                     result[new_key] = new_value
-                    print("对列表 " + key + "已完成 " + str(replace_num) + " 个列表内的盘符指向.")
+                    print("对列表 " + key + " 已完成 " + str(replace_num) + " 个列表内的盘符指向.")
                 methods.universal_save(result)
                 del result
                 if config.AutoOptTransform.remove_original_list:
@@ -156,11 +156,11 @@ def auto_opt_dpl_transform(playlists, m0_device):
                             if tmp[:len(config.Default.m0_prefix)] != config.Default.m0_prefix:
                                 new_value.append(config.Default.m0_prefix + tmp[len(config.Default.m0_prefix):])
                                 replace_num += 1
-                        else:
-                            new_value.append(tmp)
+                            else:
+                                new_value.append(tmp)
                     result[new_key] = new_value
-                    print("对列表 " + key + "已完成 " + str(replace_num) + " 个列表内的盘符指向，"
-                                                                     "列表包含曲目数量为：" + str(all_num))
+                    print("对列表 " + key + " 已完成 " + str(replace_num) + " 个列表内的盘符指向，"
+                                                                      "列表包含曲目数量为：" + str(all_num))
                 methods.universal_save(result)
                 del result
                 if config.AutoOptDplTransform.remove_original_list:

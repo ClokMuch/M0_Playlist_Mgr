@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具
-# ver.10
+# ver.11
 # By Clok Much
 
 from os import mkdir
@@ -99,7 +99,7 @@ while True:
     if len(playlists) == 1:
         # 单个列表的情况
         while True:
-            print("当前处理的列表为：" + playlists[0])
+            print("\n当前处理的列表为：" + playlists[0])
             processing = methods.analysis_playlist(playlists)
             for key, value in processing.items():
                 if key[key.rfind('.'):] == config.Default.m0_disabled_playlist:
@@ -108,19 +108,43 @@ while True:
             # 开始交互操作
             selection = methods.universal_selections(selections=config.Operations.Single.details)
             processing = actions.start_action(processing, selection)
-            methods.universal_save(processing)
+            print("*****操作完毕*****")
+            playlists = []
+            for key in processing.keys():
+                playlists.append(key)
     else:
         # 多个列表的情况
-        while True:
-            print("当前选定列表数量为：" + str(len(playlists)) + " ，为：")
-            for playlist in playlists:
-                print('    ' + playlist)
-            processing = methods.analysis_playlist(playlists)
-            num = 0     # 统计总曲目数量
-            for value in processing.values():
-                num += len(value)
-            print("处理的列表包含曲目数量为 " + str(num) + '.')
-            # 开始交互操作
-            selection = methods.universal_selections(selections=config.Operations.More.details)
-            processing = actions.start_action(processing, selection)
-            methods.universal_save(processing)
+        playlists = methods.select_playlist(m0_device + config.Default.m0_folder)
+        if len(playlists) == 1:     # 多个列表选择单个列表时，与上代码一致
+            # 单个列表的情况
+            while True:
+                print("\n当前处理的列表为：" + playlists[0])
+                processing = methods.analysis_playlist(playlists)
+                for key, value in processing.items():
+                    if key[key.rfind('.'):] == config.Default.m0_disabled_playlist:
+                        print("▲ 注意：当前选定的列表是冻结/禁用状态 ▲")
+                    print("处理的列表包含曲目数量为 " + str(len(value)) + '.')
+                # 开始交互操作
+                selection = methods.universal_selections(selections=config.Operations.Single.details)
+                processing = actions.start_action(processing, selection)
+                print("*****操作完毕*****")
+                playlists = []
+                for key in processing.keys():
+                    playlists.append(key)
+        else:
+            while True:
+                print("\n当前选定列表数量为：" + str(len(playlists)) + " ，为：")
+                for playlist in playlists:
+                    print('    ' + playlist)
+                processing = methods.analysis_playlist(playlists)
+                num = 0     # 统计总曲目数量
+                for value in processing.values():
+                    num += len(value)
+                print("处理的列表包含曲目数量为 " + str(num) + '.')
+                # 开始交互操作
+                selection = methods.universal_selections(selections=config.Operations.More.details)
+                processing = actions.start_action(processing, selection)
+                print("*****操作完毕*****")
+                playlists = []
+                for key in processing.keys():
+                    playlists.append(key)
