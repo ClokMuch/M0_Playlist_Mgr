@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具通用方法库
-# ver.9
+# ver.10
 # By Clok Much
 
 from os import path, listdir, walk
@@ -30,36 +30,38 @@ def try_find_device():
         return devices_list
 
 
+def explore_devices():
+    """
+    以导出播放列表为依据，检查是否存在设备
+    :return: 对应设备盘符的列表，不存在时返回空列表  ['F:\\', 'G:\\']
+    """
+    result = []
+    for i in range(67, 91):
+        driver_litter = chr(i) + ":\\"
+        if path.isdir(driver_litter + config.Default.m0_folder):
+            result.append(driver_litter)
+    return result
+
+
 def analysis_playlist(list_file_full_path):
     """
-    解析一个列表，返回一个去除空行的列表
-    list_file 为传入的列表全路径，类型为 str 或 list
-    返回一个 list 或 dict（列表全路径: 列表解析的list）
+    解析一个列表
+    list_file 为传入的列表全路径，类型为 list
+    返回一个 dict {列表全路径: [去除空行的内容列表]}
     """
-    if type(list_file_full_path) == str:
-        list_file_full_path = {list_file_full_path: '0\n'}
-    else:
-        tmp = {}
-        for i in list_file_full_path:
-            tmp[i] = '0\n'
-        list_file_full_path = tmp
-        pass
-    for i in list_file_full_path.keys():
+    result = {}
+    for i in list_file_full_path:
+        result[i] = 'Default\n'  # 为字典创建键值对
+    for i in result.keys():
         with open(i, 'r', encoding='utf8') as file_object:
-            list_file_full_path[i] = file_object.readlines()
+            result[i] = file_object.readlines()
             # 去除所有的空行
-            analysis_a_playlist_loop_inct = True
-            while analysis_a_playlist_loop_inct:
+            while True:
                 try:
-                    list_file_full_path[i].remove('\n')
+                    result[i].remove('\n')
                 except ValueError:
-                    analysis_a_playlist_loop_inct = False
-    if len(list_file_full_path) == 1:
-        for i in list_file_full_path.values():
-            tmp = [i]
-            return tmp
-    else:
-        return list_file_full_path
+                    break
+    return result
 
 
 def get_all_files(floder_dir):
@@ -72,34 +74,24 @@ def get_all_files(floder_dir):
         return files
 
 
-def get_a_dir(is_dir=True):
+def get_a_dir(is_dir=True, tips='Select a location...'):
     """
     选择一个路径，并返回以斜杠结尾的有效路径；
-    对 is_dir 指定非 True 内容时，将再次选择，直到选择一个驱动器
     ▲ 这里有一个坑：获取目录的含树没有想到指定为我的电脑初始路径的方法
-    这个函数可以尝试优化结构
     """
-    loop_inct = True
-    tmp = 0
-    while loop_inct:
-        tmp = askdirectory()
-        if not tmp:
-            print('未选择任何路径，将再次选择...')
-            showinfo(title="未选择驱动器", message="您取消选择，将重新自动检查设备路径.")
-            return 'Cancel'
+    while True:
+        result = askdirectory(title=tips)
+        if not result:
+            print("未选择任何内容.")
+            showinfo(title="您必须选择一个！", message="您必须选择一个内容，请在下一个窗体中选择...")
+            continue
         else:
-            if is_dir:
-                tmp = tmp.replace("/", "\\") + '\\'
-                loop_inct = False
-            else:
-                if tmp[-1] == '/':
-                    tmp = tmp.replace("/", "\\")
-                    loop_inct = False
-                else:
-                    print("选择的对象不是一个驱动器的根目录，将使用选择的文件夹对应的盘符.")
-                    tmp = tmp.replace("/", "\\")[:3]
-                    loop_inct = False
-    return tmp
+            result = result.replace("/", "\\") + "\\"
+        if is_dir:  # 要求选择路径
+            return result
+        else:   # 要求选择驱动器
+            result = result[:3]
+            return result
 
 
 def double_chk(title="二次确认", content="是否继续操作？"):
@@ -161,12 +153,20 @@ def select_playlist(dir_of_playlists):
     """
     playlist_full_path = None
     while not playlist_full_path:
-        showinfo(title="发现多个列表", message="请在下一个界面选择需要处理的播放列表")
+        showinfo(title="发现多个列表",
+                 message="请在下一个界面选择需要处理的播放列表.\n\n"
+                         "默认只显示已启用的列表，如果需要选择禁用的列表，请在右下文件类型处切换选择.")
         playlist_full_path = askopenfilenames(title='选择一个或多个播放列表文件',
-                                              filetypes=[('Playlist file', config.Default.m0_playlist_type)],
+                                              filetypes=[
+                                                  ('Playlist file', config.Default.m0_playlist_type),
+                                                  ('Disabled playlist file', config.Default.m0_disabled_playlist),
+                                                  ('All files', '*')
+                                              ],
                                               initialdir=dir_of_playlists)
         if not playlist_full_path:
-            showinfo(title="未选择任何一个播放列表", message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.")
+            showinfo(title="未选择任何一个播放列表",
+                     message="您未选择任何一个播放列表，您需要选择一个播放列表才可以继续.\n\n"
+                             "默认只显示已启用的列表，如果需要选择禁用的列表，请在右下文件类型处切换选择.")
     # playlist_full_path = playlist_full_path[0]
     # print(playlist_full_path)
     playlist_full_path = list(playlist_full_path)
@@ -222,21 +222,58 @@ def universal_selections(tips='', selections=None):
     """
     获取输入选项并判断是否合理，无误后返回选择结果
     tips: 字符串，列出选项前的提示语
-    selections: 字典，输入的选择条目
-    :return: 整数，输出的选择结果
+    selections: 字典，输入的选择条目 {'序号': ('提示/说明', '内部指令')}
+    :return: string，输出的选择结果
     """
     if type(selections) != dict:
         print("##内部错误：def universal_selections 传入的 selections 不是 dict 类型！")
     if tips:
         print(tips)
     for key, value in selections.items():
-        print(key + ':' + value)
+        print(key + ':' + value[0])
     while True:
         result = input('请选择一个操作：')
         if result not in selections.keys():
             print('输入无效，需要重新输入！')
             continue
         else:
-            result = int(result)
-            break
-    return result
+            return result
+
+
+def universal_analysis(target):
+    """
+    分析一个文件，返回易于处理的格式，自动去除空行，仅适用于一个文件
+    :param target: str 待分析的文件完整位置
+    :return: [target_path, [content_list]]
+    """
+    if type(target) != str:
+        print('#InnerError:methods.universal_analysis: target is not str.')
+        return '#InnerError:methods.universal_analysis: target is not str.'
+    else:
+        result = [target, []]
+        try:
+            with open(target, 'r', encoding='utf8') as file_object:
+                tmp = file_object.readlines()   # 去除空行
+                for i in tmp:
+                    if i == '\n':
+                        continue
+                    else:
+                        result[1].append(i)
+                return result
+        except IOError:
+            print('#InnerError:methods.universal_analysis: target is not exist or readable/IOError.')
+            return '#InnerError:methods.universal_analysis: target is not exist or readable/IOError.'
+
+
+def universal_save(target):
+    """
+    储存一个文件，自动在末尾添加空行，编码为 UTF-8
+    :param target: 字典： {'文件全路径': ['文件内容']}
+    无返回结果
+    """
+    for key, value in target.items():
+        with open(key, "w", encoding="utf8") as file_object:
+            for i in value:
+                file_object.write(i)
+            file_object.write('\n')
+    print('文件输出完毕.')

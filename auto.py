@@ -1,5 +1,5 @@
 # 山灵M0播放器播放列表管理工具自动执行方法库
-# ver.9
+# ver.10
 # By Clok Much
 
 import methods
@@ -14,36 +14,50 @@ def auto_opt_combine(playlists, m0_device):
     if config.AutoOptCombine.switch:
         print(config.AutoOptCombine.note + " 功能已启用，正在执行功能...")
         combined_lists = []
+        result = {}
         for name in playlists:
             if ((config.AutoOptCombine.filename_suffix + config.Default.m0_playlist_type) in name) and \
                     (config.AutoOptCombine.filename_mid in name):
                 combined_lists.append(name)
         if combined_lists:
             print("找到疑似自动执行合成的播放列表文件：\n" + str(combined_lists))
-            source_songs = 0
-            for tmp in combined_lists:
-                source_lists = tmp[:-16].split("And")
+            for combined_list in combined_lists:
+                # 每个合并列表的循环 'ApeAndDefault#AutoCombine.m3u'
+                source_songs = 0
+                source_lists = combined_list[
+                               :-len(config.AutoOptCombine.filename_suffix + config.Default.m0_playlist_type)
+                               ].split(config.AutoOptCombine.filename_mid)
                 combined_pool = []
-                for source_list in source_lists:
-                    source_list_tmp = methods.analysis_playlist(
-                        m0_device + config.Default.m0_folder + "\\" + source_list + config.Default.m0_playlist_type)
-                    source_songs += len(source_list_tmp[0])
-                    combined_pool += source_list_tmp[0]
+                for source_list in source_lists:  # ['Ape', 'Default']
+                    try:
+                        source_list_tmp = methods.universal_analysis(
+                            m0_device + config.Default.m0_folder + source_list + config.Default.m0_playlist_type
+                        )
+                    except IOError:
+                        if config.AutoOptCombine.combine_disabled:
+                            source_list_tmp = methods.universal_analysis(
+                                m0_device + config.Default.m0_folder + source_list + config.Default.m0_disabled_playlist
+                            )
+                            print("子列表 " + source_list + " 为禁用状态，但仍将合并（可在 config.py 中修改设置）.")
+                        else:
+                            print("子列表 " + source_list + " 为禁用状态，不参与合并（可在 config.py 中修改设置）.")
+                            continue
+                    source_songs += len(source_list_tmp[1])
+                    combined_pool += source_list_tmp[1]
                 if config.AutoOptCombine.combine_randomly:
                     # 设定随机重排合并列表时执行随机重排
-                    print("随机重排合并后的播放列表...（此配置可在 config.py 中修改）")
+                    print("随机重排合并后的播放列表...（可在 config.py 中修改设置）")
                     shuffle(combined_pool)
-                # combined_pool.insert(0, ("# " + ",".join(source_lists) + "\n"))
-                # combined_pool.insert(0, (config.AutoOptCombine.inct_in_file_line1 + "\n"))
-                methods.output_a_playlist(combined_pool, m0_device + config.Default.m0_folder + "\\" + tmp)
-                print("自动合并完毕，详情如下：")
-                print("原始子列表共计 " + str(source_songs) + " 曲音频；")
-                print("自动合成的播放列表共计 " + str(len(combined_pool)) + " 曲音频.")
+                result[m0_device + config.Default.m0_folder + combined_list] = combined_pool
+                print(combined_list + " 自动合并完毕，参与合并的子列表共计 " + str(source_songs) + " 曲；")
+                print("自动合成的播放列表共计 " + str(len(combined_pool)) + " 曲.\n")
+            methods.universal_save(result)
+            print("自动合并全部完毕，共处理自动合并列表数量为：" + str(len(combined_lists)) + '.')
         else:
-            print("自动合并列表：无满足自动执行条件的对象.")
+            print("无满足自动执行条件的对象，不进行处理.\n")
 
 
-def auto_opt_transform(playlists, m0_device, ):
+def auto_opt_transform(playlists, m0_device):
     # 自动转换盘符
     if config.AutoOptTransform.switch:
         print(config.AutoOptTransform.note + " 功能已启用，正在执行功能...")
@@ -53,33 +67,108 @@ def auto_opt_transform(playlists, m0_device, ):
             if config.AutoOptTransform.file_type in name:
                 pre_transform_lists.append(name)
         if pre_transform_lists:
-            for tmp in pre_transform_lists:
-                editing_pre_transform_list = \
-                    methods.analysis_playlist(m0_device + config.Default.m0_folder + "\\" + tmp)
+            # 补全路径
+            for i in range(len(pre_transform_lists)):
+                pre_transform_lists[i] = m0_device + config.Default.m0_folder + pre_transform_lists[i]
+            original = methods.analysis_playlist(pre_transform_lists)
+            for key, value in original.items():
                 try:
-                    if config.AutoOptTransform.inct_in_file_line1 in editing_pre_transform_list[0][0]:
-                        transform_lists.append(tmp)
+                    if config.AutoOptTransform.inct_in_file_line1 in value[0]:
+                        transform_lists.append(key)
+                    else:
+                        continue
                 except IndexError:
                     continue
+                else:
+                    continue
             if transform_lists:
-                print("找到疑似可转换的列表：\n" + str(transform_lists))
+                print("找到 " + str(len(transform_lists)) + " 个疑似可转换的列表：")
                 for transform_list in transform_lists:
-                    original_list = methods.analysis_playlist(m0_device + config.Default.m0_folder + "\\" +
-                                                              transform_list)
-                    output_list = []
-                    del original_list[0][0]
-                    replace_prefix_num = 0
-                    for tmp in original_list[0]:
-                        if (tmp[1] == ':') and (tmp[2] == '\\'):
-                            tmp = config.Default.m0_prefix[0] + tmp[1:]
-                            replace_prefix_num += 1
-                        output_list.append(tmp)
-                    print("对列表 " + transform_list + "已完成 " + str(replace_prefix_num) + " 个列表内的盘符指向.")
-                    methods.output_a_playlist(output_list, m0_device + config.Default.m0_folder + "\\" +
-                                              transform_list[0:-len(config.AutoOptTransform.file_type)] + config.Default.m0_playlist_type)
-                    if config.AutoOptTransform.remove_original_list:
-                        remove(m0_device + config.Default.m0_folder + "\\" + transform_list)
-                        print("已删除转换前的列表文件. （可在 config.py 中修改配置）")
-                print("自动转换盘符完毕.\n")
+                    print("    " + transform_list)
+                result = {}
+                for key, value in original.items():
+                    del value[0]  # 删除首行文件标记
+                    replace_num = 0
+                    new_key = key[:key.rfind('.')] + config.Default.m0_playlist_type
+                    new_value = []
+                    for tmp in value:
+                        if tmp[:len(config.Default.m0_prefix)] != config.Default.m0_prefix:
+                            new_value.append(config.Default.m0_prefix + tmp[len(config.Default.m0_prefix):])
+                            replace_num += 1
+                        else:
+                            new_value.append(tmp)
+                    result[new_key] = new_value
+                    print("对列表 " + key + "已完成 " + str(replace_num) + " 个列表内的盘符指向.")
+                methods.universal_save(result)
+                del result
+                if config.AutoOptTransform.remove_original_list:
+                    del_num = 0
+                    for key in original.keys():
+                        remove(key)
+                        del_num += 1
+                    print("已删除转换前的 %s 个列表文件. （可在 config.py 中修改配置）" % del_num)
+            print("自动转换盘符完毕.\n")
         else:
-            print("自动转换盘符：无满足自动执行条件的对象.")
+            print("无满足自动执行条件的对象，不进行处理.\n")
+
+
+def auto_opt_dpl_transform(playlists, m0_device):
+    # 自动转换 .dpl 播放列表
+    if config.AutoOptDplTransform.switch:
+        print(config.AutoOptDplTransform.note + " 功能已启用，正在执行功能...")
+        pre_transform_lists = []
+        transform_lists = []
+        for name in playlists:
+            if config.AutoOptDplTransform.file_type in name:
+                pre_transform_lists.append(name)
+        if pre_transform_lists:
+            # 补全路径
+            for i in range(len(pre_transform_lists)):
+                pre_transform_lists[i] = m0_device + config.Default.m0_folder + pre_transform_lists[i]
+            original = methods.analysis_playlist(pre_transform_lists)
+            for key, value in original.items():
+                try:
+                    if config.AutoOptDplTransform.inct_in_file_line1 in value[0]:
+                        transform_lists.append(key)
+                    else:
+                        continue
+                except IndexError:
+                    continue
+                else:
+                    continue
+            if transform_lists:
+                print("找到 " + str(len(transform_lists)) + " 个疑似可转换的列表：")
+                for transform_list in transform_lists:
+                    print("    " + transform_list)
+                result = {}
+                for key, value in original.items():
+                    del value[0]  # 删除首行文件标记
+                    replace_num = 0
+                    all_num = 0
+                    new_key = key[:key.rfind('.')] + config.Default.m0_playlist_type
+                    new_value = []
+                    for tmp in value:
+                        if config.AutoOptDplTransform.inct_inner in tmp:
+                            tmp = tmp[
+                                  (tmp.rfind(config.AutoOptDplTransform.inct_inner) +
+                                   len(config.AutoOptDplTransform.inct_inner)):]
+                            all_num += 1
+                            if tmp[:len(config.Default.m0_prefix)] != config.Default.m0_prefix:
+                                new_value.append(config.Default.m0_prefix + tmp[len(config.Default.m0_prefix):])
+                                replace_num += 1
+                        else:
+                            new_value.append(tmp)
+                    result[new_key] = new_value
+                    print("对列表 " + key + "已完成 " + str(replace_num) + " 个列表内的盘符指向，"
+                                                                     "列表包含曲目数量为：" + str(all_num))
+                methods.universal_save(result)
+                del result
+                if config.AutoOptDplTransform.remove_original_list:
+                    del_num = 0
+                    for key in original.keys():
+                        remove(key)
+                        del_num += 1
+                    print("已删除转换前的 %s 个列表文件. （可在 config.py 中修改配置）" % del_num)
+            print("转换 .dpl 格式及盘符指向完毕.\n")
+        else:
+            print("无满足自动执行条件的对象，不进行处理.\n")
